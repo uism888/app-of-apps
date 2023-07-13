@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gateway-application
+  namespace: istio-ingress
+spec:
+  project: default
+  source:
+    repoURL: https://gitlab.dmp.tele2.kz/mlops/istio-system
+    targetRevision: HEAD
+    path: ./helm-charts/gateway
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: istio-ingressgateway
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
